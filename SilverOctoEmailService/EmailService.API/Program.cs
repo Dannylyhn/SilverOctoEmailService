@@ -16,14 +16,8 @@ var config = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-builder.Services.Configure<EmailOptions>(
-    builder.Configuration.GetSection("EmailOptions"));
-/*
-var emailOptions = builder.Configuration
-    .GetSection("EmailOptions")
-    .Get<EmailOptions>();
-config.Bind(emailOptions);
-*/
+builder.Services.AddOptions<EmailOptions>().Bind(config.GetSection("EmailOptions"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
