@@ -1,8 +1,8 @@
+using EmailService.API.Models;
+using EmailService.API.Models.DTO;
+using EmailService.API.Services;
 using Microsoft.AspNetCore.Mvc;
-using SilverOctoEmailService.Models;
-using SilverOctoEmailService.Service;
-
-namespace SilverOctoEmailService.Controllers;
+namespace EmailService.API.Controllers;
 
 [Route("/api/[controller]")]
 [ApiController]
@@ -27,7 +27,8 @@ public class EmailServiceController : ControllerBase
             _emailService.Send(new Email
             {
                 Guid = guid,
-                Receiver = message.Receiver,
+                ReceiverEmail = message.ReceiverEmail,
+                ReceiverName = message.ReceiverName,
                 Subject = message.Subject,
                 Body = message.Message
             });

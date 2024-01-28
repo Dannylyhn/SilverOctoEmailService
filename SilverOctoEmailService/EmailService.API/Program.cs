@@ -1,24 +1,29 @@
-using SilverOctoEmailService.Models;
-using SilverOctoEmailService.Service;
+using EmailService.API.Models;
+using EmailService.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddLogging();
-builder.Services.AddControllers();
+builder.Services.AddScoped<IEmailService, EmailService.API.Services.EmailService>();
+
 var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables()
     .Build();
 
-builder.Configuration
-    .GetSection("EmailSettings")
+builder.Services.Configure<EmailOptions>(
+    builder.Configuration.GetSection("EmailOptions"));
+/*
+var emailOptions = builder.Configuration
+    .GetSection("EmailOptions")
     .Get<EmailOptions>();
-
+config.Bind(emailOptions);
+*/
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,5 +33,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
 app.Run();

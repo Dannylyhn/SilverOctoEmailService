@@ -1,9 +1,10 @@
 using MailKit.Net.Smtp;
+using EmailService.API.Models;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using SilverOctoEmailService.Models;
 
-namespace SilverOctoEmailService.Service;
+namespace EmailService.API.Services;
+
 public class EmailService : IEmailService
 {
     private readonly EmailOptions _emailOptions;
@@ -15,8 +16,8 @@ public class EmailService : IEmailService
     public void Send(Email mail)
     {
         var email = new MimeMessage();
-        email.From.Add(new MailboxAddress("Sender Name", _emailOptions.EmailSender));
-        email.To.Add(new MailboxAddress("Receiver Name", mail.Receiver));
+        email.From.Add(new MailboxAddress(_emailOptions.SenderName, _emailOptions.EmailSender));
+        email.To.Add(new MailboxAddress(mail.ReceiverName, mail.ReceiverEmail));
 
         email.Subject = mail.Subject;
         email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { 
