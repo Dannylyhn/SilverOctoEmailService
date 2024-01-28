@@ -1,0 +1,12 @@
+﻿services:
+  emailservice.api:
+    restart: always
+    build:
+      context: .
+      dockerfile: EmailService.API/Dockerfile
+    ports: 
+      - 80:80
+    environment:
+      - EmailOptions__UserName=placeholder
+      - EmailOptions__Password=placeholder
+      
